@@ -3,8 +3,10 @@
 
     <div class="page-wrapper ms-0">
         <div class="content">
-            <form action="{{ url('buy/product') }}" method="POST" enctype="multipart/form-data" >
+            <form action="{{ route('buy/product',$product->id)}}" method="POST" enctype="multipart/form-data" >
                 @csrf
+{{--                <input type="hidden" id="slot" name="slot" value="{{$product->slot}}" />--}}
+
             <div class="row">
 
     <div class="col-lg-2 col-sm-12 col-12">

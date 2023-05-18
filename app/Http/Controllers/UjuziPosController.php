@@ -6,6 +6,7 @@ use App\Models\UjuziCoin;
 use App\Models\UjuziPos;
 use App\Models\UjuziProduct;
 use App\Models\UjuziProductCategory;
+use App\Models\UjuziSale;
 use Illuminate\Http\Request;
 
 class UjuziPosController extends Controller
@@ -22,47 +23,56 @@ class UjuziPosController extends Controller
         $categories =UjuziProductCategory::all();
         return view('ujuzi_pos',compact('categories','products'));
     }
-    public function checkout()
+    public function checkout($ujuziProduct)
     {
           $coins = UjuziCoin::all();
-        return view('ujuzi_checkout',compact('coins'));
+          $ujuziProduct = (int) $ujuziProduct;
+        $product =  UjuziProduct::findorFail($ujuziProduct);
+        return view('ujuzi_checkout',compact('coins','product'));
    }
-    public function buy(Request $request)
+    public function buy(Request $request,$id)
     {
-//        magic happens here
         //Note, i will return json response here  hence we wont have amazing UI But just response
 
-        //First lets get the data keyed in by user
           $amount = $request->input('amount');
           $type = $request->input('type');
-            $slot = $request->input('slot');
-
+            $slot = (int) $request->input('slot');
 
             // Get the ujuzikilimo product slot based on the provided slot
-            $product = UjuziProduct::where('slot', $slot)->first();
-//            dd($product->slot);
+          $product = UjuziProduct::where('id', $id)->first();
+          $available_slots = $product->slot;
 
-            // If the product exists, check if the user has provided enough money
-            if ($product) {
+
+        // If the product exists, check if the user has provided enough money
+            if ($available_slots >=$slot) {
+
                 $price = $product->price;
-//                dd($price);
-                $coin = UjuziCoin::where('type', $type)->first();
+
+                $coin = UjuziCoin::where('type', $type)->sum('amount');
                 // If the coin type exists, check if the user has provided enough money and exact change can be given back
                 if ($coin) {
-                    $totalAmount = $coin->amount;
-                    if ($totalAmount >= $price && ($totalAmount - $price) % 1 == 0) {
+                    if ($coin >= $price) {
                         // Calculate the change to be returned to the user
-                        $change = $totalAmount - $price;
+                        $change = $amount - $price;
 
-
+                     // Calculate the change in dollars
+                        $change_amount = floor($change);
                         // Update the product slot in the ujuzi_products table
                         $product->slot = $product->slot - 1;
                         $product->save();
 
                         // Update the coin count in the ujuzi_coins table
-                        $coin->amount = $coin->amount - $price;
-                        $coin->save();
-
+                        $updated_coin = new UjuziCoin();
+                        $updated_coin->amount = $price *-1;
+                        $updated_coin->type =$type;
+                        $updated_coin->save();
+                        //save product sold in ujuzi_sales table
+                        $sale = new UjuziSale();
+                        $sale->amount = $amount;
+                        $sale->type = $type;
+                        $sale->slot = $slot;
+                        $sale->change_amount = $change_amount;
+                        $sale->save();
                         // Return the change to the user
                         $pennies = $change % 1;
                         $dollars = floor($change);
@@ -80,7 +90,7 @@ class UjuziPosController extends Controller
 
                     } else {
                         return response()->json([
-                            'message' => 'Whoopsy, we were unable to give you change for now.',
+                            'message' => ' We were unable to give you change for now,you gave lesser amount',
                         ]);
                     }
                 } else {
@@ -90,7 +100,7 @@ class UjuziPosController extends Controller
                 }
             } else {
                 return response()->json([
-                    'message' => 'Invalid or unavailable product slot',
+                    'message' => 'unavailable product slot',
                 ]);
             }
         }

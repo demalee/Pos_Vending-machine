@@ -66,6 +66,9 @@
                         <li ><a
                                     href="{{url('add_category')}}"><i
                                         data-feather="plus-square"></i><span>Add Category</span></a></li>
+                        <li ><a
+                                    href="{{route('ujuzi-sales')}}"><i
+                                        data-feather="plus-square"></i><span>Sales</span></a></li>
                     </ul>
                 </li>
                 <li class="submenu-open">

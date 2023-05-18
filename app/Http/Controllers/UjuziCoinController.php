@@ -17,12 +17,11 @@ class UjuziCoinController extends Controller
     {
 
         $totalAmount = UjuziCoin::sum('amount');
-//            dd($totalAmount);
         //summation based on coin type
         $amountByType = UjuziCoin::select('type', DB::raw('SUM(amount) as total_amount'))
             ->groupBy('type')
             ->get();
-//        dd($amountByType);
+
 
         return view('add-coin',compact('amountByType','totalAmount'));
 
@@ -49,20 +48,19 @@ class UjuziCoinController extends Controller
         //save and increment coin
         $request->validate([
             'amount'=>'required|numeric|between:0,999.99',
-            'type'=>'required|unique:ujuzi_coins',
+            'type'=>'required',
         ]);
         $coin = new UjuziCoin([
             'amount' => $request->get('amount'),
             'type' => $request->get('type'),
         ]);
 
-
         try {
             $coin->save();
             //pop a message to show the type of coin and amount saved for that particular coin
             $coinType = $request->get('type');
             $amountSaved = $request->get('amount');
-            $message = 'You have saved ' . $amountSaved . ' of ' . $coinType;
+            $message = 'You have saved ' . $amountSaved .      ' of '      . $coinType;
             return redirect()->back()->with('success', $message);
 
         }

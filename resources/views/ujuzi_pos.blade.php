@@ -30,10 +30,12 @@
                                         </div>
                                         <div class="productsetcontent">
 
-                                            <h4>Name{{$product->name}}</h4>
+                                            <h4>Name:{{$product->name}}</h4>
                                             <h6>Price:{{$product->price}}</h6>
+                                            <h6>Slot (s):{{$product->slot}}</h6>
+                                            <hr>
                                             <div class="col-12">
-                                            <a href="{{route('checkout',$product->id)}}">Purchase</a>
+                                            <a href="{{route('checkout',$product->id)}}"><button class="btn btn-success"> Purchase</button></a>
                                             </div>
                                         </div>
 

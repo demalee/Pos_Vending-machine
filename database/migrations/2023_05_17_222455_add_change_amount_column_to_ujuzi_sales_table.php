@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUjuziSalesTable extends Migration
+class AddChangeAmountColumnToUjuziSalesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateUjuziSalesTable extends Migration
      */
     public function up()
     {
-        Schema::create('ujuzi_sales', function (Blueprint $table) {
-            $table->id();
-            $table->integer('slot');
-            $table->string('type');
-            $table->string('amount');
-            $table->timestamps();
+        Schema::table('ujuzi_sales', function (Blueprint $table) {
+            //
+            $table->string('change_amount');
         });
     }
 
@@ -29,6 +26,8 @@ class CreateUjuziSalesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ujuzi_sales');
+        Schema::table('ujuzi_sales', function (Blueprint $table) {
+            //
+        });
     }
 }

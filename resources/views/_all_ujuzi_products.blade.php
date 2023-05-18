@@ -43,41 +43,57 @@
             </div>
 
         </div>
-<div class="card mb-0">
-    <div class="card-body">
-        <h4 class="card-title">All Products</h4>
-        <div class="table-responsive dataview">
-            <table class="table datatable ">
+        <div class="card mb-0">
+            <div class="card-body">
+                <h4 class="card-title">All Products</h4>
+                <div class="table-responsive dataview">
+                    <table class="table datatable ">
 
-                <thead>
-                <tr>
-                    <th>#Id</th>
+                        <thead>
+                        <tr>
+                            <th>#Id</th>
 
-                    <th>Product Name</th>
-                    <th>Category Name</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Slot</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    @foreach($products as $product)
-                        <td>#{{$product->id}}</td>
-                        <td>
-                            {{$product->name}}
-                        </td>
-                        <td> {{$product->category}}</td>
-                        <td> {{$product->price}}</td>
-                        <td> {{$product->quantity}}</td>
-                        <td> {{$product->slot}}</td>
-                    @endforeach
-                </tr>
+                            <th>Product Name</th>
+                            <th>Category Name</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Slot</th>
+                            <th>Delete</th>
+                            <th>Update</th>
+                        </tr>
+                        </thead>
+                        @foreach($products as $product)
+                            <tbody>
 
-                </tbody>
-            </table>
+                            <tr>
+
+                                <td>#{{$product->id}}</td>
+                                <td>
+                                    {{$product->name}}
+                                </td>
+                                <td> {{$product->category}}</td>
+                                <td> {{$product->price}}</td>
+                                <td> {{$product->quantity}}</td>
+                                <td> {{$product->slot}}</td>
+                                <th> <form action="{{ route('product_destroy', $product->id)}}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-success waves-effect" value="submit" type="submit">
+                                            Delete Product
+                                        </button>
+
+                                    </form></th>
+                                <th> <button class="btn btn-success waves-effect" value="submit" type="submit">
+                                        <a href="{{route('update_product',['id'=> $product->id])}}"><i class="fa fa-pencil-square-o" aria-hidden="true">Update</i></a>
+                                    </button></th>
+
+                            </tr>
+
+                            </tbody>
+                        @endforeach
+                    </table>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
     </div></div>
 @endsection

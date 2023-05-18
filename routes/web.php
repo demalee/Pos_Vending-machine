@@ -30,9 +30,14 @@ Route::post('add/product',  [App\Http\Controllers\UjuziProductController::class,
 Route::post('add/coin',  [App\Http\Controllers\UjuziCoinController::class, 'store']);
 Route::patch('update/product/{id}',  [App\Http\Controllers\UjuziProductController::class, 'update'])->name('update/product');
 Route::get('checkout/{id}', [App\Http\Controllers\UjuziPosController::class, 'checkout'])->name('checkout');
-Route::post('buy/product',[App\Http\Controllers\UjuziPosController::class,'buy'])->name('buy/product');
+Route::post('buy/product/{id}',[App\Http\Controllers\UjuziPosController::class,'buy'])->name('buy/product');
 Route::delete('product_destroy/{id}',[App\Http\Controllers\UjuziProductController::class,'destroy'])->name('product_destroy');
 Route::get('update_product/{id}', [App\Http\Controllers\UjuziProductController::class, 'edit'])->name('update_product');
+Route::get('ujuzi-sales', [App\Http\Controllers\UjuziSaleController::class, 'index'])->name('ujuzi-sales');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 

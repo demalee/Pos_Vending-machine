@@ -22,7 +22,6 @@ class UjuziProductController extends Controller
         $products = UjuziProduct::all();
         $productCount =UjuziProduct::count();
         $totalAmount = UjuziCoin::sum('amount');
-//            dd($totalAmount);
         //summation based on coin type
         $amountByType = UjuziCoin::select('type', DB::raw('SUM(amount) as total_amount'))
             ->groupBy('type')
@@ -34,7 +33,7 @@ class UjuziProductController extends Controller
         $unitType = UjuziProduct::select('category',DB::raw('SUM(slot) as slot_unit'))
             ->groupBy('category')
              ->get();
-//        dd($slotUnit);
+
         $categoryCount = UjuziProductCategory::count();
 
          return view('welcome',compact(
@@ -61,13 +60,13 @@ class UjuziProductController extends Controller
         $products = UjuziProduct::all();
         $productCount =UjuziProduct::count();
         $totalAmount = UjuziCoin::sum('amount');
-//            dd($totalAmount);
+
         //summation based on coin type
         $amountByType = UjuziCoin::select('type', DB::raw('SUM(amount) as total_amount'))
             ->groupBy('type')
             ->get();
         $categoryCount = UjuziProductCategory::count();
-//dd($products);
+
         return view('_all_ujuzi_products',compact(
             'categories',
             'products',
@@ -96,7 +95,7 @@ class UjuziProductController extends Controller
                 request()->image->move(public_path('images'), $product_pic);
             }
             $request->validate([
-                'name'=>'required|unique:ujuzi_products',
+                'name'=>'required',
                 'description'=>'required',
                 'price'=>'required',
                 'slot'=>'required',
@@ -121,7 +120,7 @@ class UjuziProductController extends Controller
                 $product->save();
                 $slot_number = $request->get('slot');
                 $category_type = $request->get('category');
-                $message = 'You have successfully saved '.''.''.$slot_number .''.'of'.'' . $category_type;
+                $message = 'You have successfully saved '.''.'    '.$slot_number.'        '.'slots'.'    '.'of'.'     ' . $category_type;
                 //using blade return
                 return redirect()->back()->with('success', $message);
 
@@ -184,7 +183,7 @@ class UjuziProductController extends Controller
                 ]);
         }
         $request-> validate([
-            'name'=>'required|unique:ujuzi_products',
+            'name'=>'required',
             'description'=>'required',
             'price'=>'required',
             'slot'=>'required',

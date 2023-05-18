@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UjuziProduct;
 use App\Models\UjuziSale;
 use Illuminate\Http\Request;
 
@@ -15,6 +16,13 @@ class UjuziSaleController extends Controller
     public function index()
     {
         //
+        $sales = UjuziSale::all();
+        $salesCount =UjuziSale::count();
+        return view('ujuzi-sales',compact(
+            'salesCount',
+            'sales',
+
+        ));
     }
 
     /**
