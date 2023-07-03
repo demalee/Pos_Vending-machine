@@ -1,4 +1,4 @@
-The Ujuzikilimo Vending Machine>
+The POS Vending Machine>
 
 There are five views: 
 Mimicking what a maintainer wil see
