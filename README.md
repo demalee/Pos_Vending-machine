@@ -1,5 +1,11 @@
 The POS Vending Machine>
 
+How to run the project
+-clone or unzip the project
+-Do composer update if cloning but not neccessary if unzipping files
+-Run the migrations -php artisan migrate
+-Run seeder ,there is a seeder for products: use php artisan db:seed --class=ProductSeeder
+
 There are five views: 
 Mimicking what a maintainer wil see
 -View all Products
@@ -15,11 +21,6 @@ Start by creating category before posting product
 Used maria db for DB, Laravel for backend and blade
 
 
-How to run the project
--clone or unzip the project
--Do composer update if cloning but not neccessary if unzipping files
--Run the migrations -php artisan migrate
--Run seeder ,there is a seeder for products: use php artisan db:seed --class=ProductSeeder
 
 What to do:
 -Maintainer should be able to:
